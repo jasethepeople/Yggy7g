@@ -47,6 +47,7 @@ export default function CrochetGenerator() {
       return response.json();
     },
     onSuccess: (data) => {
+      console.log("Pattern generation successful:", data);
       setCurrentPattern(data.pattern);
       setIsGenerating(false);
       toast({
@@ -82,6 +83,7 @@ export default function CrochetGenerator() {
       return response.json();
     },
     onSuccess: (data) => {
+      console.log("Image pattern generation successful:", data);
       setCurrentPattern(data.pattern);
       setIsGenerating(false);
       toast({
