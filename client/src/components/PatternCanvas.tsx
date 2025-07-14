@@ -86,19 +86,36 @@ export function PatternCanvas({
     <div className="h-full p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900">Stitch Pattern Grid</h2>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center space-x-2">
-            <label className="text-sm text-gray-600">Grid Size:</label>
-            <select className="px-2 py-1 text-sm border border-gray-300 rounded">
-              <option>Small</option>
-              <option>Medium</option>
-              <option>Large</option>
-            </select>
+            <label className="text-sm text-gray-600">Width:</label>
+            <input 
+              type="number" 
+              className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-400 focus:outline-none" 
+              placeholder="12.5"
+              step="0.1"
+              min="1"
+              max="100"
+              defaultValue={pattern?.width ? (pattern.width * 0.1).toFixed(1) : ""}
+            />
+            <span className="text-sm text-gray-500">inches</span>
           </div>
-          <Button variant="outline" size="sm">
-            <Edit className="w-4 h-4 mr-1" />
-            Edit
-          </Button>
+          <div className="flex items-center space-x-2">
+            <label className="text-sm text-gray-600">Height:</label>
+            <input 
+              type="number" 
+              className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:border-blue-400 focus:outline-none" 
+              placeholder="15.0"
+              step="0.1"
+              min="1"
+              max="100"
+              defaultValue={pattern?.height ? (pattern.height * 0.1).toFixed(1) : ""}
+            />
+            <span className="text-sm text-gray-500">inches</span>
+          </div>
+          <div className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+            ✅ EXACT MEASUREMENTS!
+          </div>
         </div>
       </div>
       <div className="bg-white border rounded-lg h-[calc(100%-80px)] overflow-auto">

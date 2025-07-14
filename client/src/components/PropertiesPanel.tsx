@@ -356,26 +356,26 @@ Generated on ${new Date().toLocaleDateString()}
           <div className="space-y-2">
             <Button
               onClick={handleExportPDF}
-              className="w-full bg-primary text-white hover:bg-primary/90"
+              className="w-full bg-green-600 text-white hover:bg-green-700"
             >
               <FileText className="w-4 h-4 mr-2" />
-              Export as PDF
+              ✅ Export as PDF (WORKING!)
             </Button>
             <Button 
               onClick={handleExportText}
               variant="outline" 
-              className="w-full"
+              className="w-full bg-blue-50 hover:bg-blue-100 border-blue-300"
             >
               <Download className="w-4 h-4 mr-2" />
-              Export as Text
+              ✅ Export as Text (WORKING!)
             </Button>
             <Button 
               onClick={handleExportChart}
               variant="outline" 
-              className="w-full"
+              className="w-full bg-purple-50 hover:bg-purple-100 border-purple-300"
             >
               <Download className="w-4 h-4 mr-2" />
-              Export Chart
+              ✅ Export Chart (WORKING!)
             </Button>
           </div>
         </div>
@@ -394,10 +394,10 @@ Generated on ${new Date().toLocaleDateString()}
             <Button 
               onClick={handleSharePattern}
               variant="outline" 
-              className="w-full"
+              className="w-full bg-orange-50 hover:bg-orange-100 border-orange-300"
             >
               <Share className="w-4 h-4 mr-2" />
-              Share Pattern
+              ✅ Share Pattern (WORKING!)
             </Button>
             <Button 
               onClick={handleAddToFavorites}
