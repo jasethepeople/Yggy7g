@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { Pattern } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { PatternGrid } from "./PatternGrid";
 import { ThreeVisualization } from "./ThreeVisualization";
 import { InstructionsView } from "./InstructionsView";
+import { ARPreview } from "./ARPreview";
 import { PatternExporter } from "@/utils/exportUtils";
 import { useToast } from "@/hooks/use-toast";
-import { Download, Share, RotateCcw, ZoomIn, Edit, Printer } from "lucide-react";
+import { Download, Share, RotateCcw, ZoomIn, Edit, Printer, Smartphone } from "lucide-react";
 
 interface PatternCanvasProps {
   currentView: "2d" | "3d" | "pattern" | "instructions";
@@ -20,6 +22,8 @@ export function PatternCanvas({
   pattern,
   isGenerating,
 }: PatternCanvasProps) {
+  const [showARPreview, setShowARPreview] = useState(false);
+
   const renderLoadingState = () => (
     <div className="h-full flex items-center justify-center">
       <div className="text-center">
@@ -174,6 +178,16 @@ export function PatternCanvas({
               </svg>
               <span className="md:inline">Text</span>
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] md:flex-row md:text-sm px-1 md:px-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400 hover:from-purple-600 hover:to-pink-600"
+              onClick={() => setShowARPreview(true)}
+              disabled={!pattern}
+            >
+              <Smartphone className="w-4 h-4 mb-1 md:mb-0 md:mr-2" />
+              <span className="md:inline">AR View</span>
+            </Button>
           </div>
         </div>
 
@@ -190,6 +204,13 @@ export function PatternCanvas({
             </>
           )}
         </div>
+
+        {/* AR Preview Modal */}
+        <ARPreview
+          pattern={pattern}
+          isOpen={showARPreview}
+          onClose={() => setShowARPreview(false)}
+        />
       </div>
     </div>
   );

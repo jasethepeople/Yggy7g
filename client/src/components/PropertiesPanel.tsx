@@ -4,6 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { ColorViewer } from "./ColorViewer";
+import { AdvancedPatternEditor } from "./AdvancedPatternEditor";
+import { YarnMatchingEngine } from "./YarnMatchingEngine";
+import { ProgressTracker } from "./ProgressTracker";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -16,7 +19,12 @@ import {
   Save, 
   Star,
   Play,
-  AlertTriangle
+  AlertTriangle,
+  Edit3,
+  Zap,
+  Activity,
+  Users,
+  ShoppingCart
 } from "lucide-react";
 
 interface PropertiesPanelProps {
@@ -26,6 +34,9 @@ interface PropertiesPanelProps {
 
 export function PropertiesPanel({ pattern, onPatternUpdate }: PropertiesPanelProps) {
   const [patternName, setPatternName] = useState(pattern?.name || "");
+  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
+  const [showYarnMatching, setShowYarnMatching] = useState(false);
+  const [showProgressTracker, setShowProgressTracker] = useState(false);
   const { toast } = useToast();
 
   // Update pattern mutation
@@ -434,7 +445,82 @@ Generated on ${new Date().toLocaleDateString()}
               </div>
             </CardContent>
           </Card>
+          {/* Advanced Features */}
+          <Card>
+            <CardContent className="p-4">
+              <h3 className="font-medium mb-3">Advanced Tools</h3>
+              <div className="space-y-2">
+                <Button 
+                  onClick={() => setShowAdvancedEditor(true)}
+                  disabled={!pattern}
+                  className="w-full justify-start bg-blue-600 hover:bg-blue-700"
+                >
+                  <Edit3 className="w-4 h-4 mr-2" />
+                  Advanced Pattern Editor
+                </Button>
+                
+                <Button 
+                  onClick={() => setShowYarnMatching(true)}
+                  disabled={!pattern}
+                  className="w-full justify-start bg-purple-600 hover:bg-purple-700"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Yarn Matching Engine
+                </Button>
+                
+                <Button 
+                  onClick={() => setShowProgressTracker(true)}
+                  disabled={!pattern}
+                  className="w-full justify-start bg-green-600 hover:bg-green-700"
+                >
+                  <Activity className="w-4 h-4 mr-2" />
+                  Progress Tracker
+                </Button>
+
+                <Button 
+                  disabled={!pattern}
+                  className="w-full justify-start bg-orange-600 hover:bg-orange-700"
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Collaborate
+                </Button>
+
+                <Button 
+                  disabled={!pattern}
+                  className="w-full justify-start bg-teal-600 hover:bg-teal-700"
+                >
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Shopping List
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
+
+        {/* Advanced Feature Modals */}
+        <AdvancedPatternEditor
+          pattern={pattern}
+          isOpen={showAdvancedEditor}
+          onClose={() => setShowAdvancedEditor(false)}
+          onSave={(patternData) => {
+            if (pattern) {
+              updatePatternMutation.mutate({ patternData });
+              setShowAdvancedEditor(false);
+            }
+          }}
+        />
+
+        <YarnMatchingEngine
+          pattern={pattern}
+          isOpen={showYarnMatching}
+          onClose={() => setShowYarnMatching(false)}
+        />
+
+        <ProgressTracker
+          pattern={pattern}
+          isOpen={showProgressTracker}
+          onClose={() => setShowProgressTracker(false)}
+        />
       </div>
     </div>
   );
