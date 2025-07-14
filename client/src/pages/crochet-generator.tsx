@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "wouter";
 import { PatternCanvas } from "@/components/PatternCanvas";
 import { PatternControls } from "@/components/PatternControls";
 import { PropertiesPanel } from "@/components/PropertiesPanel";
@@ -8,6 +9,8 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Pattern } from "@shared/schema";
+import { Button } from "@/components/ui/button";
+import { Library, Heart, Eye } from "lucide-react";
 
 export default function CrochetGenerator() {
   const [activeTab, setActiveTab] = useState<"text" | "upload">("text");
@@ -120,24 +123,36 @@ export default function CrochetGenerator() {
             </div>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <button 
-              onClick={() => window.open('https://github.com/your-username/crochet-ai', '_blank')}
-              className="hidden sm:flex px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            <Link href="/library">
+              <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                <Library className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Library</span>
+              </Button>
+            </Link>
+            {currentPattern && (
+              <Link href={`/pattern/${currentPattern.id}`}>
+                <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                  <Eye className="w-4 h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">View</span>
+                </Button>
+              </Link>
+            )}
+            <Button 
+              onClick={() => {
+                const favorites = JSON.parse(localStorage.getItem('crochet-favorites') || '[]');
+                const totalFavorites = favorites.length;
+                toast({
+                  title: "Your Favorites",
+                  description: `You have ${totalFavorites} favorite pattern${totalFavorites !== 1 ? 's' : ''}`,
+                });
+              }}
+              variant="ghost" 
+              size="sm"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
-              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-              </svg>
-              Help
-            </button>
-            <button 
-              onClick={() => window.location.href = '/login'}
-              className="px-3 py-2 sm:px-4 sm:py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm"
-            >
-              <svg className="w-4 h-4 mr-1 sm:mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
-              <span className="hidden sm:inline">Account</span>
-            </button>
+              <Heart className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Favorites</span>
+            </Button>
           </div>
         </div>
       </header>

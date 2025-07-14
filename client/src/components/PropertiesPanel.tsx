@@ -94,10 +94,146 @@ export function PropertiesPanel({ pattern, onPatternUpdate }: PropertiesPanelPro
   const handleExportPDF = () => {
     if (!pattern) return;
     
-    // In a real implementation, this would trigger PDF generation
+    // Create PDF content
+    const pdfContent = `
+CROCHET PATTERN: ${pattern.name || 'Untitled Pattern'}
+
+PATTERN DETAILS:
+- Size: ${pattern.width} × ${pattern.height} stitches
+- Difficulty: ${pattern.difficulty}
+- Estimated Time: ${pattern.estimatedTime || 'N/A'}
+- Total Stitches: ${pattern.stitchCount?.toLocaleString() || 'N/A'}
+
+MATERIALS NEEDED:
+- ${pattern.yarnWeight} weight yarn
+- ${pattern.fiberType} fiber
+- Appropriate hook size for ${pattern.yarnWeight} weight yarn
+- Yarn needle
+- Scissors
+
+INSTRUCTIONS:
+${pattern.instructions || 'Pattern instructions will be displayed here.'}
+
+Generated on ${new Date().toLocaleDateString()}
+    `.trim();
+    
+    // Create and download PDF as text file
+    const blob = new Blob([pdfContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(pattern.name || 'pattern').replace(/\s+/g, '-')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
     toast({
-      title: "Export Started",
-      description: "Your PDF is being generated and will download shortly.",
+      title: "Pattern Downloaded",
+      description: "Your pattern has been downloaded as a text file.",
+    });
+  };
+
+  const handleExportText = () => {
+    if (!pattern) return;
+    
+    const textContent = `${pattern.name || 'Untitled Pattern'}\n\n${pattern.instructions || 'No instructions available.'}`;
+    const blob = new Blob([textContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(pattern.name || 'pattern').replace(/\s+/g, '-')}-instructions.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Instructions Downloaded",
+      description: "Pattern instructions downloaded as text file.",
+    });
+  };
+
+  const handleExportChart = () => {
+    if (!pattern) return;
+    
+    // Create a simple chart representation
+    const chartData = pattern.patternData ? 
+      JSON.stringify(pattern.patternData, null, 2) : 
+      'No pattern data available';
+    
+    const blob = new Blob([chartData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(pattern.name || 'pattern').replace(/\s+/g, '-')}-chart.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Chart Downloaded",
+      description: "Pattern chart data downloaded as JSON file.",
+    });
+  };
+
+  const handleSharePattern = () => {
+    if (!pattern) return;
+    
+    // Create shareable URL
+    const shareUrl = `${window.location.origin}/pattern/${pattern.id}`;
+    
+    if (navigator.share) {
+      // Use native sharing if available
+      navigator.share({
+        title: pattern.name || 'Crochet Pattern',
+        text: `Check out this crochet pattern: ${pattern.name || 'Untitled Pattern'}`,
+        url: shareUrl,
+      }).catch(() => {
+        // Fallback to clipboard
+        copyToClipboard(shareUrl);
+      });
+    } else {
+      // Fallback to clipboard
+      copyToClipboard(shareUrl);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Link Copied",
+        description: "Pattern link copied to clipboard!",
+      });
+    }).catch(() => {
+      toast({
+        title: "Share Link",
+        description: `Copy this link: ${text}`,
+      });
+    });
+  };
+
+  const handleAddToFavorites = () => {
+    if (!pattern) return;
+    
+    // Add to local storage favorites for now
+    const favorites = JSON.parse(localStorage.getItem('crochet-favorites') || '[]');
+    
+    if (favorites.includes(pattern.id)) {
+      toast({
+        title: "Already in Favorites",
+        description: "This pattern is already in your favorites.",
+      });
+      return;
+    }
+    
+    favorites.push(pattern.id);
+    localStorage.setItem('crochet-favorites', JSON.stringify(favorites));
+    
+    toast({
+      title: "Added to Favorites",
+      description: "Pattern added to your favorites list!",
     });
   };
 
@@ -225,11 +361,19 @@ export function PropertiesPanel({ pattern, onPatternUpdate }: PropertiesPanelPro
               <FileText className="w-4 h-4 mr-2" />
               Export as PDF
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button 
+              onClick={handleExportText}
+              variant="outline" 
+              className="w-full"
+            >
               <Download className="w-4 h-4 mr-2" />
               Export as Text
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button 
+              onClick={handleExportChart}
+              variant="outline" 
+              className="w-full"
+            >
               <Download className="w-4 h-4 mr-2" />
               Export Chart
             </Button>
@@ -247,11 +391,19 @@ export function PropertiesPanel({ pattern, onPatternUpdate }: PropertiesPanelPro
               <Save className="w-4 h-4 mr-2" />
               {updatePatternMutation.isPending ? "Saving..." : "Save Project"}
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button 
+              onClick={handleSharePattern}
+              variant="outline" 
+              className="w-full"
+            >
               <Share className="w-4 h-4 mr-2" />
               Share Pattern
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button 
+              onClick={handleAddToFavorites}
+              variant="outline" 
+              className="w-full"
+            >
               <Heart className="w-4 h-4 mr-2" />
               Add to Favorites
             </Button>
