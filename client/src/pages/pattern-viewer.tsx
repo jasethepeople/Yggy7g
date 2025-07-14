@@ -122,13 +122,13 @@ export default function PatternViewer() {
         </div>
 
         {/* View Tabs - Mobile Optimized */}
-        <div className="px-2 pb-3">
-          <div className="flex gap-0.5 bg-gray-100 p-1 rounded-lg w-full">
+        <div className="px-1 pb-3">
+          <div className="flex gap-0.5 bg-gray-100 p-1 rounded-lg w-full max-w-full overflow-hidden">
             <Button
               variant={currentView === "2d" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("2d")}
-              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] w-1/4 px-0.5 ${
                 currentView === "2d" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
@@ -139,7 +139,7 @@ export default function PatternViewer() {
               variant={currentView === "3d" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("3d")}
-              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] w-1/4 px-0.5 ${
                 currentView === "3d" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
@@ -150,7 +150,7 @@ export default function PatternViewer() {
               variant={currentView === "pattern" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("pattern")}
-              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] w-1/4 px-0.5 ${
                 currentView === "pattern" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
@@ -161,7 +161,7 @@ export default function PatternViewer() {
               variant={currentView === "instructions" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("instructions")}
-              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] w-1/4 px-0.5 ${
                 currentView === "instructions" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
