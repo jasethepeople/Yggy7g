@@ -180,6 +180,21 @@ export default function CrochetGenerator() {
           />
         </div>
       </div>
+      
+      {/* Footer */}
+      <footer className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
+        <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+          Made with <span className="text-red-500">♥</span> by{' '}
+          <a 
+            href="https://jason-clark.org" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 transition-colors underline"
+          >
+            Jason Clark
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
