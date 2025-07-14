@@ -122,13 +122,13 @@ export default function PatternViewer() {
         </div>
 
         {/* View Tabs - Mobile Optimized */}
-        <div className="px-4 pb-3">
-          <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
+        <div className="px-2 pb-3">
+          <div className="flex gap-0.5 bg-gray-100 p-1 rounded-lg w-full">
             <Button
               variant={currentView === "2d" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("2d")}
-              className={`flex-1 text-xs min-h-[44px] ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
                 currentView === "2d" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
@@ -139,7 +139,7 @@ export default function PatternViewer() {
               variant={currentView === "3d" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("3d")}
-              className={`flex-1 text-xs min-h-[44px] ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
                 currentView === "3d" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
@@ -150,7 +150,7 @@ export default function PatternViewer() {
               variant={currentView === "pattern" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("pattern")}
-              className={`flex-1 text-xs min-h-[44px] ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
                 currentView === "pattern" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
@@ -161,12 +161,12 @@ export default function PatternViewer() {
               variant={currentView === "instructions" ? "default" : "ghost"}
               size="sm"
               onClick={() => setCurrentView("instructions")}
-              className={`flex-1 text-xs min-h-[44px] ${
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] max-w-[25%] px-1 ${
                 currentView === "instructions" ? "bg-primary text-white" : "text-gray-600"
               }`}
             >
               <FileText className="w-4 h-4 mb-1" />
-              Guide
+              Text
             </Button>
           </div>
         </div>

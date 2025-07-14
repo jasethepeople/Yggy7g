@@ -9,64 +9,114 @@ export function ThreeVisualization({ pattern }: ThreeVisualizationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (!pattern || !canvasRef.current) return;
-
-    // Initialize Three.js scene
-    // Note: In a real implementation, you would install and import Three.js
-    // For now, we'll create a placeholder 3D visualization
+    if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas size
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    // Set canvas size to match container
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    };
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-    // Create a pseudo-3D visualization using Canvas 2D
+    let animationId: number;
+    
+    // Create a working 3D-like visualization
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Draw a simple 3D-like representation
+      // Draw a gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#f8fafc');
+      gradient.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const time = Date.now() * 0.001;
       
-      // Draw multiple layers to simulate 3D depth
-      for (let z = 0; z < 10; z++) {
-        const scale = 1 - z * 0.05;
-        const alpha = 1 - z * 0.1;
+      if (pattern) {
+        // Draw pattern-based 3D visualization
+        const patternData = pattern.patternData as any;
+        const gridWidth = pattern.width || 20;
+        const gridHeight = pattern.height || 20;
+        const maxSize = Math.min(canvas.width, canvas.height) * 0.8;
+        const cellSize = maxSize / Math.max(gridWidth, gridHeight);
         
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.translate(centerX, centerY);
-        ctx.scale(scale, scale);
-        ctx.rotate(time * 0.2 + z * 0.1);
-        
-        // Draw a simplified pattern representation
-        const gridSize = 20;
-        const cellSize = 8;
-        
-        for (let x = -gridSize/2; x < gridSize/2; x++) {
-          for (let y = -gridSize/2; y < gridSize/2; y++) {
-            const hue = (x + y + z + time * 50) % 360;
-            ctx.fillStyle = `hsl(${hue}, 70%, 60%)`;
-            ctx.fillRect(
-              x * cellSize - cellSize/2, 
-              y * cellSize - cellSize/2, 
-              cellSize - 1, 
-              cellSize - 1
-            );
+        // Draw multiple layers with depth
+        for (let layer = 0; layer < 5; layer++) {
+          const scale = 1 - layer * 0.1;
+          const alpha = 1 - layer * 0.15;
+          const offsetZ = layer * 2;
+          
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.translate(centerX, centerY);
+          ctx.rotate(Math.sin(time * 0.3) * 0.1);
+          ctx.scale(scale, scale);
+          
+          // Draw grid cells
+          for (let x = 0; x < gridWidth; x++) {
+            for (let y = 0; y < gridHeight; y++) {
+              const cellX = (x - gridWidth/2) * cellSize;
+              const cellY = (y - gridHeight/2) * cellSize;
+              
+              // Create 3D effect with shadows
+              const shadowOffset = offsetZ;
+              ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+              ctx.fillRect(cellX + shadowOffset, cellY + shadowOffset, cellSize - 1, cellSize - 1);
+              
+              // Main cell with color from pattern
+              const colorIndex = (x + y + layer) % (pattern.colorPalette?.length || 1);
+              const color = pattern.colorPalette?.[colorIndex] || '#FFB3E6';
+              ctx.fillStyle = color;
+              ctx.fillRect(cellX, cellY, cellSize - 1, cellSize - 1);
+              
+              // Highlight edge
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+              ctx.lineWidth = 1;
+              ctx.strokeRect(cellX, cellY, cellSize - 1, cellSize - 1);
+            }
           }
+          
+          ctx.restore();
+        }
+      } else {
+        // Draw placeholder when no pattern
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(time * 0.5);
+        
+        for (let i = 0; i < 8; i++) {
+          const angle = (i / 8) * Math.PI * 2;
+          const x = Math.cos(angle) * 50;
+          const y = Math.sin(angle) * 50;
+          
+          ctx.fillStyle = `hsl(${(time * 100 + i * 45) % 360}, 70%, 60%)`;
+          ctx.fillRect(x - 10, y - 10, 20, 20);
         }
         
         ctx.restore();
       }
       
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
     
     animate();
+    
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   }, [pattern]);
 
   if (!pattern) {
