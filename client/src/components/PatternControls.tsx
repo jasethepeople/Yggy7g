@@ -60,6 +60,8 @@ export function PatternControls({
     onTextGeneration({
       ...textForm,
       colors: selectedColors,
+      complexity: textForm.complexity || 'simple',
+      colorPalette: textForm.colorPalette || 'custom',
     });
   };
 

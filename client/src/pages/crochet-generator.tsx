@@ -30,7 +30,20 @@ export default function CrochetGenerator() {
   // Generate pattern from text mutation
   const generateFromTextMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await apiRequest("POST", "/api/patterns/generate-from-text", data);
+      const response = await fetch("/api/patterns/generate-from-text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to generate pattern");
+      }
+      
       return response.json();
     },
     onSuccess: (data) => {
