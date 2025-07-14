@@ -523,6 +523,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Search patterns
+  app.get("/api/patterns/search", async (req, res) => {
+    try {
+      const query = req.query.q as string;
+      if (!query) {
+        return res.status(400).json({
+          success: false,
+          error: "Search query is required",
+        });
+      }
+
+      const patterns = await storage.searchPatterns(query);
+      
+      res.json({
+        success: true,
+        patterns,
+      });
+    } catch (error) {
+      console.error("Error searching patterns:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to search patterns",
+      });
+    }
+  });
+
   // Create pattern manually
   app.post("/api/patterns", async (req, res) => {
     try {
