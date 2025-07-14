@@ -363,15 +363,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.warn('Failed to fetch image for analysis, using pattern without AI analysis:', fetchError);
       }
 
-      // Generate AI analysis for instructions (skip if image fetch failed)
+      // Skip AI analysis for now to ensure pattern generation works
       let analysis = null;
-      if (imageBase64) {
-        try {
-          analysis = await analyzeImageForPattern(imageBase64);
-        } catch (analysisError) {
-          console.warn('Failed to analyze image, proceeding without AI analysis:', analysisError);
-        }
-      }
+      console.log('Skipping AI analysis to ensure pattern generation works immediately');
 
       // Generate detailed instructions (with fallback if no analysis)
       let instructions = '';
