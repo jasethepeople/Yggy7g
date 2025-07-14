@@ -96,21 +96,21 @@ export function PatternControls({
   };
 
   return (
-    <div className="w-80 bg-white border-r border-gray-200 overflow-y-auto">
-      <div className="p-6">
+    <div className="w-full lg:w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+      <div className="p-4 sm:p-6">
         {/* Generation Tabs */}
-        <div className="mb-6">
-          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+        <div className="mb-4 sm:mb-6">
+          <div className="flex space-x-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
             <Button
               variant={activeTab === "text" ? "default" : "ghost"}
-              className={`flex-1 text-sm ${activeTab === "text" ? "bg-primary text-white" : "text-gray-600"}`}
+              className={`flex-1 text-xs sm:text-sm ${activeTab === "text" ? "bg-primary text-white" : "text-gray-600 dark:text-gray-400"}`}
               onClick={() => onTabChange("text")}
             >
               Text to Pattern
             </Button>
             <Button
               variant={activeTab === "upload" ? "default" : "ghost"}
-              className={`flex-1 text-sm ${activeTab === "upload" ? "bg-primary text-white" : "text-gray-600"}`}
+              className={`flex-1 text-xs sm:text-sm ${activeTab === "upload" ? "bg-primary text-white" : "text-gray-600 dark:text-gray-400"}`}
               onClick={() => onTabChange("upload")}
             >
               Upload Image
@@ -323,7 +323,7 @@ export function PatternControls({
             <Button
               onClick={handleTextSubmit}
               disabled={isGenerating || !textForm.description.trim()}
-              className="w-full bg-primary text-white py-3 hover:bg-primary/90 transition-colors font-medium"
+              className="w-full bg-primary text-white py-3 hover:bg-primary/90 transition-colors font-medium text-sm sm:text-base"
             >
               {isGenerating ? (
                 <>
