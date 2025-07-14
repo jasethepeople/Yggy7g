@@ -5,18 +5,20 @@ import { PatternControls } from "@/components/PatternControls";
 import { PropertiesPanel } from "@/components/PropertiesPanel";
 import { PatternBreakdown } from "@/components/PatternBreakdown";
 import { ColorViewer } from "@/components/ColorViewer";
+import { TestingDashboard } from "@/components/TestingDashboard";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Pattern } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { Library, Heart, Eye } from "lucide-react";
+import { Library, Heart, Eye, TestTube } from "lucide-react";
 
 export default function CrochetGenerator() {
   const [activeTab, setActiveTab] = useState<"text" | "upload">("text");
   const [currentView, setCurrentView] = useState<"2d" | "3d" | "pattern" | "instructions">("2d");
   const [currentPattern, setCurrentPattern] = useState<Pattern | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showTestDashboard, setShowTestDashboard] = useState(false);
   const { toast } = useToast();
 
   // Fetch recent patterns
@@ -153,9 +155,25 @@ export default function CrochetGenerator() {
               <Heart className="w-4 h-4 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Favorites</span>
             </Button>
+            <Button 
+              onClick={() => setShowTestDashboard(!showTestDashboard)}
+              variant="ghost" 
+              size="sm"
+              className="text-purple-600 hover:text-purple-900"
+            >
+              <TestTube className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Test</span>
+            </Button>
           </div>
         </div>
       </header>
+
+      {/* Testing Dashboard */}
+      {showTestDashboard && (
+        <div className="mx-4 sm:mx-6 mb-4 sm:mb-6">
+          <TestingDashboard />
+        </div>
+      )}
 
       <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-6 p-4 sm:p-6 min-h-[calc(100vh-80px)]">
         {/* Mobile/Tablet: Stack vertically, Desktop: 3-column grid */}
