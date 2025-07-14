@@ -194,6 +194,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create pattern manually
+  app.post("/api/patterns", async (req, res) => {
+    try {
+      const patternData = req.body;
+      const pattern = await storage.createPattern(patternData);
+      
+      res.status(201).json({
+        success: true,
+        pattern,
+      });
+    } catch (error) {
+      console.error("Error creating pattern:", error);
+      res.status(400).json({
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to create pattern",
+      });
+    }
+  });
+
   // Update pattern
   app.patch("/api/patterns/:id", async (req, res) => {
     try {
@@ -218,6 +237,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(400).json({
         success: false,
         error: error instanceof Error ? error.message : "Failed to update pattern",
+      });
+    }
+  });
+
+  // Delete pattern
+  app.delete("/api/patterns/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deletePattern(id);
+      
+      if (!success) {
+        return res.status(404).json({
+          success: false,
+          error: "Pattern not found",
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Pattern deleted successfully",
+      });
+    } catch (error) {
+      console.error("Error deleting pattern:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to delete pattern",
       });
     }
   });
