@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { PatternCanvas } from "@/components/PatternCanvas";
 import { PatternControls } from "@/components/PatternControls";
 import { PropertiesPanel } from "@/components/PropertiesPanel";
+import { PatternBreakdown } from "@/components/PatternBreakdown";
+import { ColorViewer } from "@/components/ColorViewer";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -94,6 +96,13 @@ export default function CrochetGenerator() {
     setCurrentPattern(pattern);
   };
 
+  const handleColorsChange = (colors: string[]) => {
+    if (currentPattern) {
+      const updatedPattern = { ...currentPattern, colorPalette: colors };
+      setCurrentPattern(updatedPattern);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -127,31 +136,49 @@ export default function CrochetGenerator() {
         </div>
       </header>
 
-      <div className="flex h-[calc(100vh-80px)]">
-        {/* Sidebar Controls */}
-        <PatternControls
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          onTextGeneration={handleTextGeneration}
-          onImageGeneration={handleImageGeneration}
-          recentPatterns={recentPatterns?.patterns || []}
-          onPatternSelect={handlePatternSelect}
-          isGenerating={isGenerating}
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 h-[calc(100vh-80px)]">
+        {/* Left Sidebar - Controls & Color Viewer */}
+        <div className="lg:col-span-3 space-y-6 overflow-y-auto">
+          <PatternControls
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            onTextGeneration={handleTextGeneration}
+            onImageGeneration={handleImageGeneration}
+            recentPatterns={recentPatterns?.patterns || []}
+            onPatternSelect={handlePatternSelect}
+            isGenerating={isGenerating}
+          />
+          
+          <ColorViewer
+            pattern={currentPattern}
+            onColorsChange={handleColorsChange}
+          />
+        </div>
 
         {/* Main Canvas Area */}
-        <PatternCanvas
-          currentView={currentView}
-          onViewChange={setCurrentView}
-          pattern={currentPattern}
-          isGenerating={isGenerating}
-        />
+        <div className="lg:col-span-6">
+          <PatternCanvas
+            currentView={currentView}
+            onViewChange={setCurrentView}
+            pattern={currentPattern}
+            isGenerating={isGenerating}
+          />
+        </div>
 
-        {/* Properties Panel */}
-        <PropertiesPanel
-          pattern={currentPattern}
-          onPatternUpdate={setCurrentPattern}
-        />
+        {/* Right Sidebar - Properties & Breakdown */}
+        <div className="lg:col-span-3 space-y-6 overflow-y-auto">
+          <PropertiesPanel
+            pattern={currentPattern}
+            onPatternUpdate={setCurrentPattern}
+          />
+          
+          <PatternBreakdown
+            pattern={currentPattern}
+            onComponentSelect={(component) => {
+              console.log("Selected component:", component);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

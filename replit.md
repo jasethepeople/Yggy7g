@@ -16,6 +16,10 @@ Preferred communication style: Simple, everyday language.
 ✓ **Frontend Components**: Complete UI with pattern canvas, controls, properties panel, and multiple view modes
 ✓ **Type Safety**: Comprehensive TypeScript integration across frontend and backend
 ✓ **Error Handling**: Robust error handling and validation throughout the application
+✓ **Download & Print Features**: PDF export, pattern chart downloads, and print-optimized views using jsPDF and html2canvas
+✓ **Material Customization**: Support for yarn weights, fiber types, and alternative materials (string, rope, thread)
+✓ **Interactive Color Viewer**: Real-time color preview and customization with multiple palette options
+✓ **Complex Pattern Breakdown**: Automatic component breakdown for large patterns with assembly instructions
 
 ## System Architecture
 
@@ -48,14 +52,19 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend Components
 - **PatternCanvas**: Main visualization area supporting 2D image view, 3D preview, pattern grid, and written instructions
-- **PatternControls**: Input forms for text descriptions and image uploads with pattern customization
-- **PropertiesPanel**: Pattern metadata display and editing capabilities
+- **PatternControls**: Input forms for text descriptions and image uploads with material type selection
+- **PropertiesPanel**: Pattern metadata display and editing capabilities with export functions
 - **PatternGrid**: Interactive grid showing individual stitches with hover tooltips
+- **ColorViewer**: Interactive color picker with real-time preview and preset palettes
+- **PatternBreakdown**: Component breakdown viewer for complex patterns with assembly tracking
 
 ### Data Models
-- **Pattern**: Complete pattern with metadata, images, stitch data, and calculated metrics
+- **Pattern**: Complete pattern with metadata, images, stitch data, calculated metrics, and material specifications
 - **PatternCell**: Individual stitch representation with position, type, and color
 - **StitchType**: Enumerated crochet stitch types (sc, dc, hdc, tc, ch, sl, inc, dec)
+- **MaterialType**: Support for yarn, thread, string, rope, fabric strips, wire, and plastic materials
+- **YarnWeight**: Standard yarn weights from lace (0) to jumbo (7)
+- **FiberType**: Various fiber types including natural and synthetic options
 
 ## Data Flow
 

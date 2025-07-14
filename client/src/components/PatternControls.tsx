@@ -36,6 +36,9 @@ export function PatternControls({
     complexity: "simple" as "simple" | "intermediate" | "advanced",
     colorPalette: "pastel",
     colors: [] as string[],
+    yarnWeight: "medium" as const,
+    materialType: "yarn" as const,
+    fiberType: "acrylic" as const,
   });
 
   const [imageForm, setImageForm] = useState({
@@ -43,6 +46,9 @@ export function PatternControls({
     height: 50,
     enhanceColors: true,
     simplifyDetails: true,
+    yarnWeight: "medium" as const,
+    materialType: "yarn" as const,
+    fiberType: "acrylic" as const,
   });
 
   const [selectedColors, setSelectedColors] = useState<string[]>(["#FFB3E6", "#FFCCF2", "#E6E6FA"]);
@@ -67,6 +73,9 @@ export function PatternControls({
     formData.append("height", imageForm.height.toString());
     formData.append("enhanceColors", imageForm.enhanceColors.toString());
     formData.append("simplifyDetails", imageForm.simplifyDetails.toString());
+    formData.append("yarnWeight", imageForm.yarnWeight);
+    formData.append("materialType", imageForm.materialType);
+    formData.append("fiberType", imageForm.fiberType);
 
     onImageGeneration(formData);
   };
@@ -232,6 +241,85 @@ export function PatternControls({
               </RadioGroup>
             </div>
 
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l-1.777.888a3 3 0 01-2.676 0L10 12.5v-1.382a1 1 0 00-.553-.894L6 8.618V5z" clipRule="evenodd" />
+                </svg>
+                Material Type
+              </Label>
+              <Select
+                value={textForm.materialType}
+                onValueChange={(value) => setTextForm({ ...textForm, materialType: value as any })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="yarn">Yarn</SelectItem>
+                  <SelectItem value="thread">Crochet Thread</SelectItem>
+                  <SelectItem value="string">Craft String</SelectItem>
+                  <SelectItem value="rope">Rope/Cord</SelectItem>
+                  <SelectItem value="fabric-strips">Fabric Strips</SelectItem>
+                  <SelectItem value="wire">Craft Wire</SelectItem>
+                  <SelectItem value="plastic">Plastic Yarn</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2">Yarn Weight & Fiber</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs text-gray-500">Weight</Label>
+                  <Select
+                    value={textForm.yarnWeight}
+                    onValueChange={(value) => setTextForm({ ...textForm, yarnWeight: value as any })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="lace">Lace (0)</SelectItem>
+                      <SelectItem value="super-fine">Super Fine (1)</SelectItem>
+                      <SelectItem value="fine">Fine (2)</SelectItem>
+                      <SelectItem value="light">Light (3)</SelectItem>
+                      <SelectItem value="medium">Medium (4)</SelectItem>
+                      <SelectItem value="bulky">Bulky (5)</SelectItem>
+                      <SelectItem value="super-bulky">Super Bulky (6)</SelectItem>
+                      <SelectItem value="jumbo">Jumbo (7)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-xs text-gray-500">Fiber</Label>
+                  <Select
+                    value={textForm.fiberType}
+                    onValueChange={(value) => setTextForm({ ...textForm, fiberType: value as any })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="acrylic">Acrylic</SelectItem>
+                      <SelectItem value="cotton">Cotton</SelectItem>
+                      <SelectItem value="wool">Wool</SelectItem>
+                      <SelectItem value="bamboo">Bamboo</SelectItem>
+                      <SelectItem value="silk">Silk</SelectItem>
+                      <SelectItem value="alpaca">Alpaca</SelectItem>
+                      <SelectItem value="mohair">Mohair</SelectItem>
+                      <SelectItem value="linen">Linen</SelectItem>
+                      <SelectItem value="polyester">Polyester</SelectItem>
+                      <SelectItem value="nylon">Nylon</SelectItem>
+                      <SelectItem value="blend">Blend</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
             <Button
               onClick={handleTextSubmit}
               disabled={isGenerating || !textForm.description.trim()}
@@ -306,6 +394,85 @@ export function PatternControls({
                     min="10"
                     max="200"
                   />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l-1.777.888a3 3 0 01-2.676 0L10 12.5v-1.382a1 1 0 00-.553-.894L6 8.618V5z" clipRule="evenodd" />
+                </svg>
+                Material Type
+              </Label>
+              <Select
+                value={imageForm.materialType}
+                onValueChange={(value) => setImageForm({ ...imageForm, materialType: value as any })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="yarn">Yarn</SelectItem>
+                  <SelectItem value="thread">Crochet Thread</SelectItem>
+                  <SelectItem value="string">Craft String</SelectItem>
+                  <SelectItem value="rope">Rope/Cord</SelectItem>
+                  <SelectItem value="fabric-strips">Fabric Strips</SelectItem>
+                  <SelectItem value="wire">Craft Wire</SelectItem>
+                  <SelectItem value="plastic">Plastic Yarn</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2">Yarn Weight & Fiber</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs text-gray-500">Weight</Label>
+                  <Select
+                    value={imageForm.yarnWeight}
+                    onValueChange={(value) => setImageForm({ ...imageForm, yarnWeight: value as any })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="lace">Lace (0)</SelectItem>
+                      <SelectItem value="super-fine">Super Fine (1)</SelectItem>
+                      <SelectItem value="fine">Fine (2)</SelectItem>
+                      <SelectItem value="light">Light (3)</SelectItem>
+                      <SelectItem value="medium">Medium (4)</SelectItem>
+                      <SelectItem value="bulky">Bulky (5)</SelectItem>
+                      <SelectItem value="super-bulky">Super Bulky (6)</SelectItem>
+                      <SelectItem value="jumbo">Jumbo (7)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-xs text-gray-500">Fiber</Label>
+                  <Select
+                    value={imageForm.fiberType}
+                    onValueChange={(value) => setImageForm({ ...imageForm, fiberType: value as any })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="acrylic">Acrylic</SelectItem>
+                      <SelectItem value="cotton">Cotton</SelectItem>
+                      <SelectItem value="wool">Wool</SelectItem>
+                      <SelectItem value="bamboo">Bamboo</SelectItem>
+                      <SelectItem value="silk">Silk</SelectItem>
+                      <SelectItem value="alpaca">Alpaca</SelectItem>
+                      <SelectItem value="mohair">Mohair</SelectItem>
+                      <SelectItem value="linen">Linen</SelectItem>
+                      <SelectItem value="polyester">Polyester</SelectItem>
+                      <SelectItem value="nylon">Nylon</SelectItem>
+                      <SelectItem value="blend">Blend</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>

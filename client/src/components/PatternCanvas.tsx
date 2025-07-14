@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { PatternGrid } from "./PatternGrid";
 import { ThreeVisualization } from "./ThreeVisualization";
 import { InstructionsView } from "./InstructionsView";
-import { Download, Share, RotateCcw, ZoomIn, Edit } from "lucide-react";
+import { PatternExporter } from "@/utils/exportUtils";
+import { useToast } from "@/hooks/use-toast";
+import { Download, Share, RotateCcw, ZoomIn, Edit, Printer } from "lucide-react";
 
 interface PatternCanvasProps {
   currentView: "2d" | "3d" | "pattern" | "instructions";
