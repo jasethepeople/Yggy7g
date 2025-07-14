@@ -501,6 +501,221 @@ export function PatternControls({
                 </div>
               </div>
             </div>
+
+            {/* Generate Button for Text Tab */}
+            <div className="pt-4">
+              <Button
+                onClick={handleTextSubmit}
+                disabled={isGenerating || !textForm.description.trim()}
+                className="w-full bg-primary text-white py-3 hover:bg-primary/90 transition-colors font-medium text-sm sm:text-base"
+              >
+                {isGenerating ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Generating Pattern...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13 6a3 3 0 11-6 0 3 3 0 616 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+                    </svg>
+                    Generate Pattern from Text
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Upload Image Tab */}
+        {activeTab === "upload" && (
+          <div className="space-y-6">
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <Upload className="w-4 h-4 mr-2" />
+                Upload Image
+              </Label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  id="image-upload"
+                  disabled={isGenerating}
+                />
+                <label htmlFor="image-upload" className="cursor-pointer">
+                  <svg className="mx-auto h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  <p className="text-sm text-gray-600">Drag & drop or click to upload</p>
+                  <p className="text-xs text-gray-400 mt-1">PNG, JPG up to 10MB</p>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2">Pattern Size</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs text-gray-500">Width (stitches)</Label>
+                  <Input
+                    type="number"
+                    value={imageForm.width}
+                    onChange={(e) => setImageForm({ ...imageForm, width: parseInt(e.target.value) || 40 })}
+                    min="10"
+                    max="200"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs text-gray-500">Height (rows)</Label>
+                  <Input
+                    type="number"
+                    value={imageForm.height}
+                    onChange={(e) => setImageForm({ ...imageForm, height: parseInt(e.target.value) || 50 })}
+                    min="10"
+                    max="200"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l-1.777.888a3 3 0 01-2.676 0L10 12.5v-1.382a1 1 0 00-.553-.894L6 8.618V5z" clipRule="evenodd" />
+                </svg>
+                Material Type
+              </Label>
+              <Select
+                value={imageForm.materialType}
+                onValueChange={(value) => setImageForm({ ...imageForm, materialType: value as any })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="yarn">Yarn</SelectItem>
+                  <SelectItem value="thread">Crochet Thread</SelectItem>
+                  <SelectItem value="string">Craft String</SelectItem>
+                  <SelectItem value="rope">Rope/Cord</SelectItem>
+                  <SelectItem value="fabric-strips">Fabric Strips</SelectItem>
+                  <SelectItem value="wire">Craft Wire</SelectItem>
+                  <SelectItem value="plastic">Plastic Yarn</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2">Yarn Weight & Fiber</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs text-gray-500">Weight</Label>
+                  <Select
+                    value={imageForm.yarnWeight}
+                    onValueChange={(value) => setImageForm({ ...imageForm, yarnWeight: value as any })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="lace">Lace (0)</SelectItem>
+                      <SelectItem value="super-fine">Super Fine (1)</SelectItem>
+                      <SelectItem value="fine">Fine (2)</SelectItem>
+                      <SelectItem value="light">Light (3)</SelectItem>
+                      <SelectItem value="medium">Medium (4)</SelectItem>
+                      <SelectItem value="bulky">Bulky (5)</SelectItem>
+                      <SelectItem value="super-bulky">Super Bulky (6)</SelectItem>
+                      <SelectItem value="jumbo">Jumbo (7)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-xs text-gray-500">Fiber</Label>
+                  <Select
+                    value={imageForm.fiberType}
+                    onValueChange={(value) => setImageForm({ ...imageForm, fiberType: value as any })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="acrylic">Acrylic</SelectItem>
+                      <SelectItem value="cotton">Cotton</SelectItem>
+                      <SelectItem value="wool">Wool</SelectItem>
+                      <SelectItem value="bamboo">Bamboo</SelectItem>
+                      <SelectItem value="silk">Silk</SelectItem>
+                      <SelectItem value="alpaca">Alpaca</SelectItem>
+                      <SelectItem value="mohair">Mohair</SelectItem>
+                      <SelectItem value="linen">Linen</SelectItem>
+                      <SelectItem value="polyester">Polyester</SelectItem>
+                      <SelectItem value="nylon">Nylon</SelectItem>
+                      <SelectItem value="blend">Blend</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                </svg>
+                Processing Options
+              </Label>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Auto-enhance colors</span>
+                  <Switch
+                    checked={imageForm.enhanceColors}
+                    onCheckedChange={(checked) => setImageForm({ ...imageForm, enhanceColors: checked })}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Simplify details</span>
+                  <Switch
+                    checked={imageForm.simplifyDetails}
+                    onCheckedChange={(checked) => setImageForm({ ...imageForm, simplifyDetails: checked })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Generate Button for Upload Tab */}
+            <div className="pt-4">
+              <p className="text-xs text-gray-500 mb-3">Upload an image first, then click generate</p>
+              <Button
+                disabled={isGenerating}
+                className="w-full bg-primary text-white py-3 hover:bg-primary/90 transition-colors font-medium text-sm sm:text-base"
+                onClick={() => {
+                  const fileInput = document.getElementById('image-upload') as HTMLInputElement;
+                  if (!fileInput?.files?.[0]) {
+                    fileInput?.click();
+                  }
+                }}
+              >
+                {isGenerating ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Processing Image...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Generate Pattern from Image
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         )}
 
