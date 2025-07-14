@@ -194,7 +194,7 @@ export default function CrochetGenerator() {
         {/* Mobile/Tablet: Stack vertically, Desktop: 3-column grid */}
         
         {/* Left Sidebar - Controls & Color Viewer */}
-        <div className="lg:col-span-3 space-y-4 sm:space-y-6 order-1 lg:order-none">
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6 order-2 lg:order-1">
           <PatternControls
             activeTab={activeTab}
             onTabChange={setActiveTab}
@@ -214,7 +214,7 @@ export default function CrochetGenerator() {
         </div>
 
         {/* Main Canvas Area */}
-        <div className="lg:col-span-6 order-2 lg:order-none min-h-[400px] lg:min-h-0">
+        <div className="lg:col-span-6 order-1 lg:order-2 min-h-[400px] lg:min-h-0">
           <PatternCanvas
             currentView={currentView}
             onViewChange={setCurrentView}
