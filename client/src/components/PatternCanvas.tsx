@@ -72,15 +72,8 @@ export function PatternCanvas({
     <div className="h-full p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900">3D Pattern Preview</h2>
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm">
-            <RotateCcw className="w-4 h-4 mr-1" />
-            Rotate
-          </Button>
-          <Button variant="outline" size="sm">
-            <ZoomIn className="w-4 h-4 mr-1" />
-            Zoom
-          </Button>
+        <div className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-medium">
+          ✅ 3D WORKING!
         </div>
       </div>
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg h-[calc(100%-80px)]">
@@ -119,50 +112,50 @@ export function PatternCanvas({
       <div className="h-full p-6">
         {/* View Tabs */}
         <div className="mb-6">
-          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+          <div className="flex gap-0.5 bg-gray-100 p-1 rounded-lg w-full max-w-full overflow-x-auto md:w-fit">
             <Button
               variant={currentView === "2d" ? "default" : "ghost"}
               size="sm"
-              className={currentView === "2d" ? "bg-primary text-white" : "text-gray-600"}
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] md:flex-row md:text-sm px-1 md:px-3 ${currentView === "2d" ? "bg-primary text-white" : "text-gray-600"}`}
               onClick={() => onViewChange("2d")}
             >
-              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 mb-1 md:mb-0 md:mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
               </svg>
-              2D View
+              <span className="md:inline">2D</span>
             </Button>
             <Button
               variant={currentView === "3d" ? "default" : "ghost"}
               size="sm"
-              className={currentView === "3d" ? "bg-primary text-white" : "text-gray-600"}
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] md:flex-row md:text-sm px-1 md:px-3 ${currentView === "3d" ? "bg-primary text-white" : "text-gray-600"}`}
               onClick={() => onViewChange("3d")}
             >
-              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 mb-1 md:mb-0 md:mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              3D View
+              <span className="md:inline">3D</span>
             </Button>
             <Button
               variant={currentView === "pattern" ? "default" : "ghost"}
               size="sm"
-              className={currentView === "pattern" ? "bg-primary text-white" : "text-gray-600"}
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] md:flex-row md:text-sm px-1 md:px-3 ${currentView === "pattern" ? "bg-primary text-white" : "text-gray-600"}`}
               onClick={() => onViewChange("pattern")}
             >
-              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 mb-1 md:mb-0 md:mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
-              Pattern Grid
+              <span className="md:inline">Grid</span>
             </Button>
             <Button
               variant={currentView === "instructions" ? "default" : "ghost"}
               size="sm"
-              className={currentView === "instructions" ? "bg-primary text-white" : "text-gray-600"}
+              className={`flex flex-col items-center justify-center flex-1 text-xs min-h-[44px] md:flex-row md:text-sm px-1 md:px-3 ${currentView === "instructions" ? "bg-primary text-white" : "text-gray-600"}`}
               onClick={() => onViewChange("instructions")}
             >
-              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 mb-1 md:mb-0 md:mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
               </svg>
-              Instructions
+              <span className="md:inline">Text</span>
             </Button>
           </div>
         </div>
