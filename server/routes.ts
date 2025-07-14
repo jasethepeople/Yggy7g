@@ -353,13 +353,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Calculate metrics
       const metrics = PatternGenerator.calculateMetrics(patternGrid);
 
-      // Generate AI analysis for instructions
-      const analysis = await analyzeImageForPattern(
-        generatedImage.url.split(',')[1] || '' // Extract base64 if data URL
-      );
+      // Convert DALL-E image URL to base64 for analysis
+      let imageBase64 = '';
+      try {
+        const imageResponse = await fetch(generatedImage.url);
+        const imageBuffer = await imageResponse.arrayBuffer();
+        imageBase64 = Buffer.from(imageBuffer).toString('base64');
+      } catch (fetchError) {
+        console.warn('Failed to fetch image for analysis, using pattern without AI analysis:', fetchError);
+      }
 
-      // Generate detailed instructions
-      const instructions = await generatePatternInstructions(patternGrid, analysis);
+      // Generate AI analysis for instructions (skip if image fetch failed)
+      let analysis = null;
+      if (imageBase64) {
+        try {
+          analysis = await analyzeImageForPattern(imageBase64);
+        } catch (analysisError) {
+          console.warn('Failed to analyze image, proceeding without AI analysis:', analysisError);
+        }
+      }
+
+      // Generate detailed instructions (with fallback if no analysis)
+      let instructions = '';
+      try {
+        if (analysis) {
+          instructions = await generatePatternInstructions(patternGrid, analysis);
+        } else {
+          // Fallback: generate basic instructions without AI analysis
+          instructions = `Basic Crochet Pattern Instructions:
+          
+Materials Needed:
+- ${validatedData.yarnWeight} weight ${validatedData.fiberType} yarn in chosen colors
+- Appropriate crochet hook for yarn weight
+- Yarn needle for sewing
+- Scissors
+
+Pattern Details:
+- Size: ${validatedData.width} stitches × ${validatedData.height} rows
+- Difficulty: ${validatedData.complexity}
+- Estimated Time: ${metrics.estimatedTime}
+
+Basic Instructions:
+1. Chain ${validatedData.width} stitches for foundation
+2. Work in rows using single crochet or double crochet
+3. Follow color changes as indicated in pattern grid
+4. Finish with a border if desired
+
+Note: This is a computer-generated pattern. Please verify stitch counts and adjust as needed.`;
+        }
+      } catch (instructionError) {
+        console.warn('Failed to generate AI instructions, using basic pattern:', instructionError);
+        instructions = `Basic pattern instructions for ${validatedData.description}. Size: ${validatedData.width}×${validatedData.height}`;
+      }
 
       // Save pattern to storage
       const user = req.user as any;
