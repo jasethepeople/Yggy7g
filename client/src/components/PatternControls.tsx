@@ -97,7 +97,7 @@ export function PatternControls({
 
   return (
     <div className="w-full lg:w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-      <div className="p-4 sm:p-6">
+      <div className="p-4 sm:p-6 max-h-[70vh] overflow-y-auto">
         {/* Generation Tabs */}
         <div className="mb-4 sm:mb-6">
           <div className="flex space-x-1 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
